@@ -82,12 +82,10 @@ class plg(bs.Plugin):
             bs.FreeForAllSession,
         ]
         for gametype in gametypes:
-            # standerd/default gametypes are exported-
-            # from "bascenev1lib/game/" with module name: "'bascenev1lib'.'game'.'module_name'" with 3 dots.
-            # and custom gametypes are exported -
-            # from "mods fold or workspace" with module name: "'module_name'" with 0 dots.  
-            # Using that difference we can differ the standerd and custom gametypes. 
-            if '.' not in gametype.__module__: 
+            # standerd/default gametypes are exported from "bascenev1lib/game/".
+            # and custom gametypes are exported from "mods fold or workspace".  
+            # Using that difference we can differ the standerd and custom gametypes.
+            if not gametype.__module__.startswith("bascenev1lib"): 
                 # incase we got same gametypes from mods and workspace.
                 if any([
                     gametype.name.strip().lower() == mg.gametype.name.strip().lower() # hmm.. comparing names..
