@@ -101,7 +101,7 @@ class plg(bs.Plugin):
                     sessiontype for sessiontype in sessiontypes
                     if gametype.supports_session_type(sessiontype)
                 ]
-                # Incase not match.
+                # # incase got Coop or custom sessions.
                 if not supported_sessiontypes: 
                     continue
                 # At first selecting first session as defualt.
