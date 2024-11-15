@@ -548,7 +548,6 @@ def _new_multisession_on_activity_end(func: function) -> function:
     def wrapper(*args, **kwrags) -> None:
        
         if plg.quick_play:
-            print("WHy???")
             # Aahaaaa! looks like session has been successfully hosted.
             if isinstance(args[1], bs.JoinActivity):
                 # here we go....
