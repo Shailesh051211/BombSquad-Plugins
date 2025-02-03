@@ -5,14 +5,14 @@
     discord: shailesh_gabu_11/ShailesH
     
     Function:
-        Holds text message in party window's text field.
+        Holds text message of party window's text field.
     
     Logic: 
         store text whenever party window close.
         Then whenever it's open, edit text field with stored text.
     
     Query:    
-        Why is there is 'z' at first and last in file name?
+        Why is there 'z' at first and last in file name?
             first 'z' reason >
               because want to compile this file at last.  
               so this plugin can be compatible with other party window plugins.
@@ -39,7 +39,7 @@ class plg(bui.Plugin):
     # The party window text field's text; that to be hold.
     text: str = ""
     
-    # we gonna use decorators cause we need make this mod compatible with others.
+    # we gonna use decorators cause we need to make this mod compatible with others.
     
     def new_init(func: function) -> function:
     
