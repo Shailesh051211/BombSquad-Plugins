@@ -5,12 +5,12 @@
     discord: shailesh_gabu_11/ShailesH
     
     Function:
-        Allow to mute/unmute specific guy.
+        Allow to mute/unmute specific member.
     
     Logic:
-    	- Create a separate mute/unmute button for all guys.
-        - whenever button activate, gather all info that guy...
-           And update button accordingly 
+    	- Create a separate mute/unmute button for all members.
+        - whenever button activate, gather all info that member...
+           And update mute state of that member and button accordingly.
         - then whenever a msg appear in chat, extract the chatter name.
         - if that chatter name in gathered info and the chatter is muted.
               don't show message
@@ -43,6 +43,19 @@ from bascenev1lib.mainmenu import MainMenuActivity
 from baclassic._appsubsystem import ClassicAppSubsystem
 
 
+# Gonna use decorators to make this plugin compitibale with others.
+
+# PartyWindow.on_chat_message
+def new_ocm(func: function) -> function:
+    
+    def wrapper(*args, **kwargs) -> None:
+        
+        func(*args, **kwargs) # original 
+        args[0]._update() # update instant.
+        
+    return wrapper
+    
+#----------------------------------------------------------------------------------------------------------------
 # PartyWindow._update
 def new_update(func: function) -> function:
     
@@ -50,6 +63,11 @@ def new_update(func: function) -> function:
     
         # original code.
         func(*args, **kwargs)
+        
+        # clearing old.
+        for widget in plg.widgets:
+            widget.delete()
+        plg.widgets = []
         
         if not args[0]._roster: return
         
@@ -62,10 +80,6 @@ def new_update(func: function) -> function:
                 name = msg[0:msg.rfind(':')]
                 if plg.display_msg(name, args[0]._roster):
                     args[0]._add_msg(msg)
-            
-        for widget in plg.widgets:
-            widget.delete()
-        plg.widgets = []
         
         # some eric code to find position.
         colmns = min(len(args[0]._roster), 3)
@@ -175,7 +189,7 @@ def _on_press(
         cfg.apply_and_commit()
         party_window._display_old_msgs = True
         
-    party_window._update()
+    party_window._update() # update party
 
 #----------------------------------------------------------------------------------------------------------------
 # PartyWindow.popup_menu_selected_choice
@@ -198,11 +212,9 @@ def new_pmsc(func: function) -> function:
                 else:
                     plg.muted_clients[display_str] = [mute_state, display_str]
   
-            args[0]._update()
+            args[0]._update() # update party
             
     return wrapper
-
-def __add_members_info(party: PartyWindow):
 
 #----------------------------------------------------------------------------------------------------------------
 # PartyWindow.close
@@ -239,6 +251,7 @@ def new_mm_init(func: function) -> function:
     return wrapper
 
 #----------------------------------------------------------------------------------------------------------------
+# ClassicAppSubsystem.party_icon_activate
 def new_party_press(func: function) -> function:
     
     def wrapper(*args, **kwargs) -> None:
@@ -255,7 +268,7 @@ def new_party_press(func: function) -> function:
 
 #----------------------------------------------------------------------------------------------------------------
 class FakeParty:
-    
+    """ Pretend to be fake while partywindow close... """
     def __init__(self) -> None:
          bui.set_party_window_open(True)
          
@@ -263,6 +276,7 @@ class FakeParty:
         return self
     
     def on_chat_message(self, msg: str) -> None:
+        """ ...So we can get msg when someone send message """
         name = msg[0:msg.rfind(':')]
         roster = bs.get_game_roster()
         if plg.display_msg(name, roster):
@@ -272,24 +286,30 @@ class FakeParty:
 class plg(bui.Plugin):
     """ Our plugin type for the game """
     
+    # The user display string.
     our_display_name: str = ""
+    # contains clients info(names)
     muted_clients: dict[str, list] = {}
+    # contains speaker type button and cross image widgets.
     widgets: list[bui.Widget] = []
     
     # wrapping...
     PartyWindow.close = new_close(PartyWindow.close)
     PartyWindow._update = new_update(PartyWindow._update)
+    PartyWindow.on_chat_message = (
+        new_ocm(PartyWindow.on_chat_message)
+    )
     PartyWindow.popup_menu_selected_choice = (
         new_pmsc(PartyWindow.popup_menu_selected_choice)
     )
-    MainMenuActivity.__init__ = new_mm_init(MainMenuActivity.__init__)
     
+    MainMenuActivity.__init__ = new_mm_init(MainMenuActivity.__init__)
     ClassicAppSubsystem.party_icon_activate = (
         new_party_press(ClassicAppSubsystem.party_icon_activate)
     )
     
     def display_msg(name: str, roster: list) -> bool:
-    
+        """Called to check if given name is muted or not in plg.muted clients"""
         show_msg = True
         for client in roster:
             display_str = client["display_string"]
