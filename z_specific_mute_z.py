@@ -4,52 +4,24 @@
     by shailesh
     discord: shailesh_gabu_11/ShailesH
     
-    Function:
-        Allow to mute/unmute specific member.
-    
-    Logic:
-    	- Create a separate mute/unmute button for all members.
-        - whenever button activate, gather all info that member...
-           And update mute state of that member and button accordingly.
-        - then whenever a msg appear in chat, extract the chatter name.
-        - if that chatter name in gathered info and the chatter is muted.
-              don't show message
-        - else
-             show message
-    
-    Query:    
-        Why is there 'z' at first and last in file name?
-            first 'z' reason >
-              because want to compile this file at last.  
-              so this plugin can be compatible with other party window plugins.
-            last 'z' reason >
-              Nothing... for decoration purpose.
+    Allow to mute/unmute specific member.
 """
 
 from __future__ import annotations 
 
-# Python Libraries.
 import math
 
-# Ballistica API.
 import bauiv1 as bui
 import bascenev1 as bs
 
-# Ballistica Libraries.
 from bauiv1lib.party import PartyWindow
 from bascenev1lib.mainmenu import MainMenuActivity
-
-# Umm....
 from baclassic._appsubsystem import ClassicAppSubsystem
 
 
-# Gonna use decorators to make this plugin compitibale with others.
-
-# PartyWindow.on_chat_message
 def new_ocm(func: function) -> function:
     
     def wrapper(*args, **kwargs) -> None:
-        
         func(*args, **kwargs) # original 
         args[0]._update() # update instant.
         
@@ -282,7 +254,7 @@ class FakeParty:
         if plg.display_msg(name, roster):
             bui.screenmessage(msg, color=(0.2, 0.5, 0.2)) 
 
-# ba_meta export plugin
+# ba_meta export babase.Plugin
 class plg(bui.Plugin):
     """ Our plugin type for the game """
     
