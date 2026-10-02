@@ -1,13 +1,14 @@
 # ba_meta require api 9
 
 """
-    by shailesh_gabu_11/ShailesH
+    by shailesh
+    discord: shailesh_gabu_11/shailesh
     
     Changes the shield-color same as your in-game character color.
 """ 
 
 import bascenev1 as bs
-from bascenev1lib.actor.spaz import Spaz
+import bascenev1lib as bslib
 
 # ba_meta export babase.Plugin
 class plg(bs.Plugin):
@@ -26,4 +27,6 @@ class plg(bs.Plugin):
         
         return wrapper
     
-    Spaz.equip_shields = new_equip_shield(Spaz.equip_shields)
+    bslib.actor.spaz.Spaz.equip_shields = (
+        new_equip_shield(bslib.actor.spaz.Spaz.equip_shields)
+    )
