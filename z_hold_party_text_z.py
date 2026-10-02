@@ -2,10 +2,9 @@
 
 """
     by shailesh
-    discord: shailesh_gabu_11/ShailesH
+    discord: shailesh_gabu_11/shailesh
     
-    Function:
-        Holds text message of party window's text field.
+    keeps text message of party window's text field.
 """
 
 from __future__ import annotations 
@@ -18,8 +17,8 @@ from bauiv1lib.party import PartyWindow
 class plg(bui.Plugin):
     """ Our plugin type for the game """
     
-    # The party window text field's text; that to be hold.
-    text: str = ""
+    text: str = "" # saved text
+    
     def new_init(func: function) -> function:
         def wrapper(*args, **kwargs):
             func(*args, **kwargs) # original code
