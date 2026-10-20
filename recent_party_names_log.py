@@ -10,7 +10,7 @@
     helps when you forgot to add a party in favorite list \
          which you recently enjoy the most.
     
-    (this happens to me serval times that's why I made this little plugin)
+    (this happens to me several times that's why I made this little plugin)
 """
 
 from __future__ import annotations
