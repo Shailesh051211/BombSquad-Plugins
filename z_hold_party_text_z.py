@@ -19,21 +19,19 @@ class plg(bui.Plugin):
     
     text: str = "" # saved text
     
-    def new_init(func: function) -> function:
+    def new_init(func):
         def wrapper(*args, **kwargs):
-            func(*args, **kwargs) # original code
+            _res = func(*args, **kwargs) # original code
             bui.textwidget(edit=args[0]._text_field, text=plg.text)
-        
+            return _res
         return wrapper
         
     PartyWindow.__init__ = new_init(PartyWindow.__init__)    
 
     def new_close(func):
         def wrapper(*args, **kwargs) -> None:
-            
             plg.text = cast(str, bui.textwidget(query=args[0]._text_field)).strip()
-            func(*args, **kwargs) # original code
-            
+            return func(*args, **kwargs) # original code
         return wrapper
         
     PartyWindow.close = new_close(PartyWindow.close)
