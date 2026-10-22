@@ -10,7 +10,7 @@
     helps when you forgot to add a party in favorite list \
          which you recently enjoy the most.
     
-    (this happens to me serval times that's why I made this little plugin)
+    (this happens to me several times that's why I made this little plugin)
 """
 
 from __future__ import annotations
@@ -36,11 +36,12 @@ class plg(bui.Plugin):
             """ extented original function to add recent button """
             
             c_width, c_height = args[1], args[2]
+            btn_width, btn_height = 100, 50
             recent_button = bui.buttonwidget(
                 id="GS|recent_button",
                 parent=args[0]._container,
                 position=(c_width * 0.86, c_height - btn_height - 25),
-                size=(100, 50),
+                size=(btn_width, btn_height),
                 label="Recents",
                 left_widget=args[0]._host_text,
             )
