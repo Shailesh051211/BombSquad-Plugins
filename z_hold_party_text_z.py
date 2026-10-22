@@ -11,7 +11,7 @@ from __future__ import annotations
 from typing import cast
 
 import bauiv1 as bui
-from bauiv1lib.party import PartyWindow
+from bauiv1lib import party
     
 # ba_meta export babase.Plugin
 class plg(bui.Plugin):
@@ -26,7 +26,7 @@ class plg(bui.Plugin):
             return _res
         return wrapper
         
-    PartyWindow.__init__ = new_init(PartyWindow.__init__)    
+    party.PartyWindow.__init__ = new_init(party.PartyWindow.__init__)    
 
     def new_close(func):
         def wrapper(*args, **kwargs) -> None:
@@ -34,4 +34,4 @@ class plg(bui.Plugin):
             return func(*args, **kwargs) # original code
         return wrapper
         
-    PartyWindow.close = new_close(PartyWindow.close)
+    party.PartyWindow.close = new_close(party.PartyWindow.close)
