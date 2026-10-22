@@ -268,7 +268,7 @@ class RecentPartiesWindow(popup.PopupWindow):
         confirm.ConfirmWindow(
             f'Remove "{bui.app.config[RECENT_PARTIES_CONFIG_KEY][key]}"?',
             lambda: self._do_remove(key),
-            width=450, height=150,
+            width=450, height=150
         )
 
     def _do_remove(self, key: str) -> None:
