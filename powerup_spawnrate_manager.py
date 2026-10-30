@@ -45,19 +45,11 @@ class SettingsWindow(bui.MainWindow):
         assert bui.app.classic is not None
         uiscale = bui.app.ui_v1.uiscale
 
-        screen_width, screen_height = bui.get_virtual_screen_size()
-        self.width = (
-            screen_width * 0.9
-            if uiscale is bui.UIScale.SMALL
-            else screen_width * 0.7
-            if uiscale is bui.UIScale.MEDIUM
-            else screen_width * 0.6
-        )
-        self.height = (
-            screen_height * 0.9
-            if uiscale is bui.UIScale.LARGE
-            else screen_height
-        )
+        self.width, self.height = bs.get_virtual_screen_size()
+        if uiscale is not bui.UIScale.SMALL:
+            self.width = self.height * (4 / 3)
+            self.height = min(self.height, self.width * (3 / 4))
+            
         super().__init__(
             root_widget=bui.containerwidget(
                 size=(self.width, self.height),
@@ -67,11 +59,12 @@ class SettingsWindow(bui.MainWindow):
                     else "menu_full"
                 ),
                 scale=(
-                   1.2
+                   1.15
                    if uiscale is bui.UIScale.SMALL
-                   else 0.9 if uiscale is bui.UIScale.MEDIUM
-                   else 0.8
-                )
+                   else 0.8 if uiscale is bui.UIScale.MEDIUM
+                   else 0.7
+                ),
+                background_art="tall"
             ),
             transition=transition,
             origin_widget=origin_widget,
@@ -157,13 +150,10 @@ class SettingsWindow(bui.MainWindow):
 
         remain_space = self.height - self._covered_space
 
-        self._scrollwidth = (self.width * 0.9
-            if uiscale is bui.UIScale.SMALL else self.width * 0.85)
-        self._scrollheight = (remain_space * 0.9
-            if uiscale is bui.UIScale.SMALL else remain_space * 0.85)
+        self._scrollwidth = self.width * 0.9
+        self._scrollheight = remain_space * 0.9
 
-        ypad = 25 if uiscale is bui.UIScale.SMALL else 30
-
+        ypad = 25
         _scroll_xpos = (self.width - self._scrollwidth)/2
         _scroll_ypos = (remain_space - self._scrollheight)/2 + ypad
 
