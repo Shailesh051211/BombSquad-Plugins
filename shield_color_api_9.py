@@ -8,7 +8,7 @@
 """ 
 
 import bascenev1 as bs
-import bascenev1lib as bslib
+from bascenev1lib.actor import spaz
 
 # ba_meta export babase.Plugin
 class plg(bs.Plugin):
@@ -16,7 +16,7 @@ class plg(bs.Plugin):
     def new_equip_shield(func):
         def wrapper(*args, **kwargs):
             
-            func(*args, **kwargs) # original code
+            _res = func(*args, **kwargs) # original code
             
             # make it 25% darker to reduce intensity of shield light
             r = args[0].node.color[0] * 0.75
@@ -24,9 +24,8 @@ class plg(bs.Plugin):
             b = args[0].node.color[2] * 0.75
             
             args[0].shield.color = (r, g, b)
-        
+            
+            return _res
         return wrapper
     
-    bslib.actor.spaz.Spaz.equip_shields = (
-        new_equip_shield(bslib.actor.spaz.Spaz.equip_shields)
-    )
+    spaz.Spaz.equip_shields = new_equip_shield(spaz.Spaz.equip_shields)
