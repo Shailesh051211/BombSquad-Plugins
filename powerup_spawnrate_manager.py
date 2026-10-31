@@ -416,8 +416,8 @@ def _new_chatmessage(func):
         fg_activity = bs.get_foreground_host_activity()
         if fg_activity and args[0].strip() == "/pmw":
             plg.set_settings_window(transition="in_scale")
-            if bui.app.classic.party_window:
-                bs.apptimer(0.1, bui.app.classic.party_window().close)
+            if party_window := bui.app.classic.party_window():
+                party_window.close()
 
         return func(*args, **kwargs)
     return wrapper
