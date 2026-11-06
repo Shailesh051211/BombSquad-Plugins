@@ -13,11 +13,12 @@
     inform me at discord if you find any errors/bugs
 """
 
+from __future__ import annotations
 from typing import override
 
 import bauiv1 as bui
 import bascenev1 as bs
-import bascenev1lib as bslib
+from bascenev1lib.actor import powerupbox as stdpbx
 
 from bauiv1lib import popup
 
@@ -45,6 +46,8 @@ class SettingsWindow(bui.MainWindow):
         assert bui.app.classic is not None
         uiscale = bui.app.ui_v1.uiscale
 
+        # want full filled container in SMALLL
+        # and 4:3 ration in MEDIUM and HIGH 
         self.width, self.height = bs.get_virtual_screen_size()
         if uiscale is not bui.UIScale.SMALL:
             self.width = self.height * (4 / 3)
@@ -379,9 +382,7 @@ def _new_pbxfact_init(func):
 
     return wrapper
 
-bslib.actor.powerupbox.PowerupBoxFactory.__init__ = (
-    _new_pbxfact_init(bslib.actor.powerupbox.PowerupBoxFactory.__init__)
-)
+stdpbx.PowerupBoxFactory.__init__ = _new_pbxfact_init(stdpbx.PowerupBoxFactory.__init__)
 
 # breakin' curse-health cycle when health weight is 0
 def _new_pbxfact_get_rand_powerup(func):
@@ -394,9 +395,9 @@ def _new_pbxfact_get_rand_powerup(func):
         return func(*args, **kwargs)
     return wrapper
 
-bslib.actor.powerupbox.PowerupBoxFactory.get_random_powerup_type = (
+stdpbx.PowerupBoxFactory.get_random_powerup_type = (
     _new_pbxfact_get_rand_powerup(
-        bslib.actor.powerupbox.PowerupBoxFactory.get_random_powerup_type
+        stdpbx.PowerupBoxFactory.get_random_powerup_type
     )
 )
 
@@ -455,7 +456,6 @@ class plg(bs.Plugin):
 
     @override
     def show_settings_ui(self, source_widget: bui.Widget) -> None:
-
         plg.set_settings_window(None, source_widget)
 
     def set_settings_window(
