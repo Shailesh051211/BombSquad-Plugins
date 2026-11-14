@@ -7,9 +7,7 @@
     keeps text message of party window's text field.
 """
 
-from __future__ import annotations 
-from typing import cast
-
+from __future__ import annotations
 import bauiv1 as bui
 from bauiv1lib import party
     
@@ -21,17 +19,16 @@ class plg(bui.Plugin):
     
     def new_init(func):
         def wrapper(*args, **kwargs):
-            _res = func(*args, **kwargs) # original code
+            func(*args, **kwargs) # original
             bui.textwidget(edit=args[0]._text_field, text=plg.text)
-            return _res
         return wrapper
         
     party.PartyWindow.__init__ = new_init(party.PartyWindow.__init__)    
 
     def new_close(func):
         def wrapper(*args, **kwargs) -> None:
-            plg.text = cast(str, bui.textwidget(query=args[0]._text_field)).strip()
-            return func(*args, **kwargs) # original code
+            plg.text = bui.textwidget(query=args[0]._text_field).strip()
+            return func(*args, **kwargs) # original
         return wrapper
         
     party.PartyWindow.close = new_close(party.PartyWindow.close)
