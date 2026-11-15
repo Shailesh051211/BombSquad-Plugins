@@ -5,7 +5,7 @@
     discord: shailesh_gabu_11/shailesh
     
     Adds Double Rampage map in the game with proper defs - 
-        and railing(edge-protection) support
+        and railings(edge-protection) support
 """
 
 from __future__ import annotations
