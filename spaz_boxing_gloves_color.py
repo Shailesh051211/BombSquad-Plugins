@@ -40,7 +40,7 @@ class plg(bs.Plugin):
             b = b if b != 0.0 else 0.01
 
             # don't think so this time need relative-luminance, don't need perfect-accurate colors
-            # avg ration of colors for equal distribution
+            # avg ratio of colors for equal distribution
             spaz_intensity = (r + g + b) / 3.0
 
             # dark-version of color look nice for boxing-gloves
